@@ -1,18 +1,18 @@
 module Slideable
 
-    HORIZONTAL_AND_VERTICAL = {
-    left: [0, -1],
-    right: [0, 1],
-    up: [-1, 0],
-    down: [1, 0]
-}.freeze
+    HORIZONTAL_AND_VERTICAL = [
+        [-1, 0],
+        [0, -1],
+        [0, 1],
+        [1, 0]
+    ].freeze
 
-    DIAGONAL = {
-        upleft: [-1, -1],
-        upright: [-1, 1],
-        downleft: [1, -1],
-        downright: [1, 1]
-}.freeze
+    DIAGONAL = [
+        [-1, -1],
+        [-1, 1],
+        [1, 1],
+        [1, -1]
+    ].freeze
     
     def horizontal_and_vertical_dirs
         HORIZONTAL_AND_VERTICAL
@@ -25,12 +25,13 @@ module Slideable
     def moves
         moves = []
         move_dirs.each do |dx, dy|
-            moves << grow_unblocked_moves_in_dir(dx, dy)            
+            moves.concat(grow_unblocked_moves_in_dir(dx, dy))            
         end
+        moves
     end
 
     private
-    def move_dirs
+    def move_diff
         raise NotImplementedError
     end
 
@@ -39,8 +40,7 @@ module Slideable
         moves = []
 
         loop do
-            x += dx
-            y += dy
+            x, y = x + dx, y + dy
             pos = [x, y]
 
             break unless board.valid_pos?(pos)

@@ -1,5 +1,4 @@
 require "io/console"
-require_relative "chess_board"
 require "byebug"
 
 KEYMAP = {
@@ -34,8 +33,7 @@ MOVES = {
 
 class Cursor
 
-  attr_reader :board 
-  attr_accessor :cursor_pos, :selected
+  attr_reader :board, :cursor_pos, :selected
 
   def initialize(cursor_pos, board)
     @cursor_pos = cursor_pos
@@ -82,7 +80,7 @@ class Cursor
   def toggle_selected
     @selected = !@selected
   end
-
+ 
   def handle_key(key)
     case key
     when :ctrl_c
@@ -93,11 +91,13 @@ class Cursor
     when :left, :right, :up, :down
         update_pos(MOVES[key])
         return nil
+    else
+      puts key
     end
   end
 
   def update_pos(diff)
     new_pos = [cursor_pos[0] + diff[0], cursor_pos[1] + diff[1]]
-    @cursor_pos = new_pos if  @board.valid_pos?([new_pos[0], new_pos[1]])
+    @cursor_pos = new_pos if  @board.valid_pos?(new_pos)
   end
 end

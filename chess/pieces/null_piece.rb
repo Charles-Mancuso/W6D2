@@ -6,11 +6,16 @@ class NullPiece < Piece
     include Singleton
 
     def initialize
-       @symbol = "null"
+       @symbol = " "
+       @color = :none
     end
 
-    def inspect
-        @symbol
+    def empty?
+        true
+    end
+
+    def moves
+        []
     end
 end
     
